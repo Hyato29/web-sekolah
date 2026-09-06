@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable {
+class User extends Authenticatable
+{
     use Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role_id', // Tambahkan ini
+        'role_id',
     ];
 
     protected $hidden = [
@@ -20,20 +21,36 @@ class User extends Authenticatable {
         'remember_token',
     ];
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    // Relasi ke tabel roles[cite: 1]
-    public function role() {
+
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 
-    // Helper untuk mengecek role[cite: 1]
-    public function hasRole($roleName): bool {
+
+    public function hasRole($roleName): bool
+    {
         return $this->role()->where('name', $roleName)->exists();
+    }
+
+    public function guru()
+    {
+        return $this->hasOne(Guru::class);
+    }
+
+    /**
+     * Relasi ke profil Siswa (1 Akun User memiliki 1 Profil Siswa)
+     */
+    public function siswa()
+    {
+        return $this->hasOne(Siswa::class);
     }
 }

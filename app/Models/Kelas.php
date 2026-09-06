@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Kelas extends Model {
+    protected $table = 'kelas';
+    
+    protected $fillable = [
+        'nama_kelas',
+        'tahun_ajaran'
+    ];
+
+    // Relasi ke Siswa (1 Kelas memiliki banyak Siswa)
+    public function siswa() {
+        return $this->hasMany(Siswa::class);
+    }
+}
